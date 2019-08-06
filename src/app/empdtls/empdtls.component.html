@@ -1,0 +1,195 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+<div class="container">
+
+  <button (click)="myModal.open()">open my modal</button>
+  <modal #myModal>
+    <modal-header>
+      <h1>Modal header</h1>
+    </modal-header>
+    <modal-content>
+    </modal-content>
+    <modal-footer>
+      <button class="btn btn-primary" (click)="myModal.close()">close</button>
+    </modal-footer>
+  </modal>
+  <h1>Employee details</h1>
+
+  <table class="table table-bordered table-condensed table-hover">
+    <tr class="info">
+      <th>
+        Employee ID
+      </th>
+      <th>
+        First Name
+      </th>
+      <th>
+        Last Name
+      </th>
+      <th>
+        Email
+      </th>
+      <th>
+        Action
+      </th>
+    </tr>
+    <tr *ngFor='let data of empdetails '>
+
+      <td>{{data.id}}</td>
+      <td>{{data.first_name}}</td>
+      <td>{{data.last_name}}</td>
+      <td>{{data.email}}</td>
+      <td>
+        <button class="btn btn-info" (click)="viewmodel.open(data)">View</button> &nbsp; &nbsp;
+        <modal #viewmodel>
+          <modal-header>
+            <h1>{{data.first_name}}</h1>
+          </modal-header>
+          <modal-content>
+            <table class="table table-bordered  table-condensed table-hover">
+              <tr>
+                <td>
+                  ID
+                </td>
+                <td>
+                  {{data.id}}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  First Name
+                </td>
+                <td>
+                  {{data.first_name}}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Last Name
+                </td>
+                <td>
+                  {{data.last_name}}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Email
+                </td>
+                <td>
+                  {{data.email}}
+                </td>
+              </tr>
+            </table>
+          </modal-content>
+          <modal-footer>
+            <button class="btn btn-primary" (click)="viewmodel.close()">close</button>
+
+          </modal-footer>
+        </modal>
+
+        <button class="btn btn-success" (click)="editmodal.open(data)">Edit</button> &nbsp; &nbsp;
+        <modal #editmodal>
+          <modal-header>
+            <h4>Edit Employee</h4>
+          </modal-header>
+          <modal-content>
+            <form class="form-horizontal" #updateform='ngForm' #updateuser='ngForm'>
+              <div class="form-group">
+                <label class="control-label col-sm-4">
+                  Employee id
+                </label>
+                <div class="col-sm-6">
+                  <input type="text" id="user_id" name="user_id" 
+                  class="form-control"  [value]=data.id readonly >
+                </div>
+            
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-4">
+                  Employee Name
+                </label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control"
+                   [value]=data.first_name [(ngModel)]="updateuser.user_name" #user_name="ngModel"
+                   name="user_name" id="user_name">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="lastname" class="control-label col-sm-4">
+                  Last Name
+                </label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" [value]=data.last_name>
+                </div>
+              </div>
+              <div class="form-group">
+                  <label class="control-label col-sm-4">
+                    Email id
+                  </label>
+                  <div class="col-sm-6">
+                      <input type="email" class="form-control" [value]=data.email>
+                  </div>
+              </div>
+              <div class="col-sm-offset-5">
+                  <button class="btn btn-primary" (click)="updateemp(updateuser.value)">Update Details</button>
+              </div>
+             
+              <h1>{{updateuser.value|json}}</h1>
+            </form>
+          </modal-content>
+          <modal-footer>
+            <button class="btn btn-primary" (click)="editmodal.close()">close</button>
+          </modal-footer>
+
+        </modal>
+
+        <button class="btn btn-danger" (click)="Deletedtls(data.id)">Delete</button> &nbsp; &nbsp;
+      </td>
+    </tr>
+  </table>
+
+  <div class="col-md-4 col-md-offset-4">
+
+    <form #myForm='ngForm' #user='ngForm'>
+      <div class="form-group">
+        <label for="Eid">
+          Employee id
+        </label>
+        <input type="text" id="eid" name="id" [(ngModel)]="user.id" #id="ngModel" class="form-control">
+
+      </div>
+      <div class="form-group">
+        <label for="fname">
+          First Name
+        </label>
+        <input type="text" id="fname" name="first_name" [(ngModel)]="user.first_name" #first_name="ngModel"
+          class="form-control">
+
+      </div>
+      <div class="form-group">
+        <label for="lname">
+          Last Name
+        </label>
+        <input type="text" id="lname" name="last_name" [(ngModel)]="user.last_name" #last_name="ngModel"
+          class="form-control">
+
+      </div>
+      <div class="form-group">
+        <label for="email">
+          Email
+        </label>
+        <input type="text" id="email" name="email" [(ngModel)]="user.email" #email="ngModel" class="form-control">
+
+      </div>
+
+
+      <button class="btn btn-success" (click)=submitEmployee(user.value)>Create new Employee</button>
+    </form>
+
+  </div>
+
+  <p>
+    new user detail {{user.value|json}}
+  </p>
+</div>
